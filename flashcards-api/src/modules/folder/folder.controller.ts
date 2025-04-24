@@ -6,29 +6,48 @@ import {
   Body,
   Param,
   UseGuards,
-  Request,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { FolderService } from './folder.service';
-import { JwtAuthGuard } from '../../common/jwt-auth.guard';
-import { RequestWithUser } from 'src/common/types/request-with-user.interface';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
+import { AuthenticatedUser } from 'src/common/decorators/authenticated-user';
+import { User } from '../auth/entities/user.entity';
+import {
+  ApiBody,
+  ApiNotFoundResponse,
+  ApiBearerAuth,
+  ApiTags,
+} from '@nestjs/swagger';
+import { CreateFolderDto } from './dto/create-folder.dto';
 
+@ApiTags('Folders')
+@ApiBearerAuth()
 @Controller('folders')
 @UseGuards(JwtAuthGuard)
 export class FolderController {
-  constructor(private folderService: FolderService) {}
+  constructor(private readonly folderService: FolderService) {}
 
   @Get()
-  getFolders(@Request() req: RequestWithUser) {
-    return this.folderService.findByUser(req.user.id);
+  getFolders(@AuthenticatedUser() user: User) {
+    return this.folderService.findByUser(user.id);
   }
 
   @Post()
-  create(@Request() req: RequestWithUser, @Body() body: { name: string }) {
-    return this.folderService.create(req.user.id, body.name);
+  @ApiBody({ type: CreateFolderDto })
+  create(
+    @AuthenticatedUser() user: User,
+    @Body() createFolderDto: CreateFolderDto,
+  ) {
+    return this.folderService.create(user.id, createFolderDto.name);
   }
 
   @Delete(':id')
-  delete(@Request() req: RequestWithUser, @Param('id') id: number) {
-    return this.folderService.delete(req.user.id, id);
+  @ApiNotFoundResponse({ description: 'Folder not found' })
+  async delete(
+    @AuthenticatedUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    await this.folderService.delete(user.id, id);
+    return { success: true };
   }
 }

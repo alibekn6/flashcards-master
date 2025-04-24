@@ -1,8 +1,19 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+  Req,
+  Get,
+} from '@nestjs/common';
+import { Request } from 'express';
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthPayloadDto } from './dto/auth.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -29,8 +40,15 @@ export class AuthController {
   }
 
   @Post('login')
+  @UseGuards(AuthGuard('local'))
   async login(@Body() authPayload: AuthPayloadDto) {
     const token = await this.authService.login(authPayload);
     return { token };
+  }
+
+  @Get('me')
+  @UseGuards(AuthGuard('jwt'))
+  getMe(@Req() req: Request) {
+    console.log(req.user);
   }
 }

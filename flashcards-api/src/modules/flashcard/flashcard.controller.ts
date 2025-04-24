@@ -9,7 +9,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { JwtAuthGuard } from '../../common/jwt-auth.guard';
+import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { FlashcardService } from './flashcard.service';
 import { RequestWithUser } from 'src/common/types/request-with-user.interface';
 
