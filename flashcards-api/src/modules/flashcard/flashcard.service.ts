@@ -1,9 +1,14 @@
-import { Injectable, ForbiddenException } from '@nestjs/common';
+import {
+  Injectable,
+  ForbiddenException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Flashcard } from '../flashcard/entities/flashcard.entity';
 import { Folder } from '../folder/entities/folder.entity';
 import { UpdateFlashcardDto } from './dto/update-flashcard.dto';
+import { CreateFlashcardDto } from './dto/create-flashcard.dto';
 
 @Injectable()
 export class FlashcardService {
@@ -25,11 +30,7 @@ export class FlashcardService {
     return this.flashcardRepo.find({ where: { folder: { id: folderId } } });
   }
 
-  async create(
-    userId: number,
-    folderId: number,
-    data: { question: string; answer: string },
-  ) {
+  async create(userId: number, folderId: number, data: CreateFlashcardDto) {
     const folder = await this.folderRepo.findOne({
       where: { id: folderId },
       relations: ['user'],
@@ -39,22 +40,48 @@ export class FlashcardService {
     return this.flashcardRepo.save(card);
   }
 
-  async update(userId: number, id: number, data: UpdateFlashcardDto) {
+  async update(
+    userId: number,
+    folderId: number,
+    flashcardId: number,
+    data: UpdateFlashcardDto,
+  ) {
     const card = await this.flashcardRepo.findOne({
-      where: { id },
+      where: {
+        id: flashcardId,
+        folder: {
+          id: folderId,
+          user: { id: userId },
+        },
+      },
       relations: ['folder', 'folder.user'],
     });
-    if (!card || card.folder.user.id !== userId) throw new ForbiddenException();
-    Object.assign(card, data);
+    if (!card || card.folder.user.id !== userId)
+      throw new ForbiddenException(
+        'Flashcard not found or you dont have permission',
+      );
+    if (data.question !== undefined) {
+      card.question = data.question;
+    }
+    if (data.answer !== undefined) {
+      card.answer = data.answer;
+    }
     return this.flashcardRepo.save(card);
   }
 
-  async delete(userId: number, id: number) {
-    const card = await this.flashcardRepo.findOne({
-      where: { id },
-      relations: ['folder', 'folder.user'],
+  async delete(userId: number, folderId: number, flashcardId: number) {
+    const flashcard = await this.flashcardRepo.findOne({
+      where: {
+        id: flashcardId,
+        folder: { id: folderId, user: { id: userId } },
+      },
     });
-    if (!card || card.folder.user.id !== userId) throw new ForbiddenException();
-    return this.flashcardRepo.remove(card);
+    if (!flashcard) {
+      throw new NotFoundException(
+        'Flashcard not found or you dont have permission',
+      );
+    }
+
+    return this.flashcardRepo.delete(flashcard);
   }
 }

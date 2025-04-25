@@ -6,14 +6,18 @@ import {
   Delete,
   Param,
   Body,
-  Request,
   UseGuards,
   ParseIntPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { FlashcardService } from './flashcard.service';
-import { RequestWithUser } from 'src/common/types/request-with-user.interface';
-import { ApiTags, ApiBearerAuth, ApiBody, ApiParam } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiBody,
+  ApiParam,
+  ApiOperation,
+} from '@nestjs/swagger';
 import { AuthenticatedUser } from 'src/common/decorators/authenticated-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import { CreateFlashcardDto } from './dto/create-flashcard.dto';
@@ -21,13 +25,13 @@ import { UpdateFlashcardDto } from './dto/update-flashcard.dto';
 
 @ApiTags('Flashcards')
 @ApiBearerAuth()
-@Controller('flashcards')
+@Controller('folders/:folderId/flashcards')
 @UseGuards(JwtAuthGuard)
 export class FlashcardController {
   constructor(private flashcardService: FlashcardService) {}
 
-  @Get(':folderId')
-  get(
+  @Get()
+  getAllInFolder(
     @AuthenticatedUser() user: User,
     @Param('folderId', ParseIntPipe) folderId: number,
   ) {
@@ -35,7 +39,7 @@ export class FlashcardController {
     return this.flashcardService.findByFolder(user.id, folderId);
   }
 
-  @Post(':folderId')
+  @Post()
   @ApiParam({ name: 'folderId', type: Number })
   @ApiBody({ type: CreateFlashcardDto })
   create(
@@ -46,19 +50,42 @@ export class FlashcardController {
     return this.flashcardService.create(user.id, folderId, createFlashcardDto);
   }
 
-  @Put(':id')
-  @ApiParam({ name: 'id', type: Number })
+  @Put(':flashcardId')
+  @ApiOperation({ summary: 'Update flashcard' })
+  @ApiParam({ name: 'folderId', description: 'ID of the folder', type: Number })
+  @ApiParam({
+    name: 'flashcardId',
+    description: 'ID of the flashcard',
+    type: Number,
+  })
   @ApiBody({ type: UpdateFlashcardDto })
   update(
     @AuthenticatedUser() user: User,
-    @Param('id') id: number,
+    @Param('folderId', ParseIntPipe) folderId: number,
+    @Param('flashcardId', ParseIntPipe) flashcardId: number,
     @Body() updateFlashcardDto: UpdateFlashcardDto,
   ) {
-    return this.flashcardService.update(user.id, id, updateFlashcardDto);
+    return this.flashcardService.update(
+      user.id,
+      folderId,
+      flashcardId,
+      updateFlashcardDto,
+    );
   }
 
-  @Delete(':id')
-  delete(@Request() req: RequestWithUser, @Param('id') id: number) {
-    return this.flashcardService.delete(req.user.id, id);
+  @Delete(':flashcardId')
+  @ApiOperation({ summary: 'Delete flashcard' })
+  @ApiParam({ name: 'folderId', description: 'ID of the folder', type: Number })
+  @ApiParam({
+    name: 'flashcardId',
+    description: 'ID of the flashcard',
+    type: Number,
+  })
+  async delete(
+    @AuthenticatedUser() user: User,
+    @Param('folderId', ParseIntPipe) folderId: number,
+    @Param('flashcardId', ParseIntPipe) flashcardId: number,
+  ) {
+    return this.flashcardService.delete(user.id, folderId, flashcardId);
   }
 }
