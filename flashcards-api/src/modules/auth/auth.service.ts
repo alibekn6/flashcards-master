@@ -70,8 +70,8 @@ export class AuthService {
     };
   }
 
-  async findUserById(id: number) {
-    return this.userRepo.findOneBy({ id });
+  async findUserById(id: number): Promise<User | null> {
+    return this.userRepo.findOne({ where: { id } });
   }
 
   private async validatePassword(

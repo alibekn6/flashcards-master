@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Flashcard } from '../flashcard/entities/flashcard.entity';
 import { Folder } from '../folder/entities/folder.entity';
+import { UpdateFlashcardDto } from './dto/update-flashcard.dto';
 
 @Injectable()
 export class FlashcardService {
@@ -15,6 +16,7 @@ export class FlashcardService {
   ) {}
 
   async findByFolder(userId: number, folderId: number) {
+    console.log(`Checking access for user ${userId} to folder ${folderId}`);
     const folder = await this.folderRepo.findOne({
       where: { id: folderId },
       relations: ['user'],
@@ -37,11 +39,7 @@ export class FlashcardService {
     return this.flashcardRepo.save(card);
   }
 
-  async update(
-    userId: number,
-    id: number,
-    data: { question: string; answer: string },
-  ) {
+  async update(userId: number, id: number, data: UpdateFlashcardDto) {
     const card = await this.flashcardRepo.findOne({
       where: { id },
       relations: ['folder', 'folder.user'],

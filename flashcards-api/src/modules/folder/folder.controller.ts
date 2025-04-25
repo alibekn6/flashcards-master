@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { FolderService } from './folder.service';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
-import { AuthenticatedUser } from 'src/common/decorators/authenticated-user';
+import { AuthenticatedUser } from 'src/common/decorators/authenticated-user.decorator';
 import { User } from '../auth/entities/user.entity';
 import {
   ApiBody,
@@ -29,6 +29,7 @@ export class FolderController {
 
   @Get()
   getFolders(@AuthenticatedUser() user: User) {
+    console.log('User ID in controller!!!:', user.id);
     return this.folderService.findByUser(user.id);
   }
 

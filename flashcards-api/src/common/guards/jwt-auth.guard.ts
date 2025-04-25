@@ -1,27 +1,14 @@
-// src/common/guards/jwt-auth.guard.ts
-import {
-  Injectable,
-  UnauthorizedException,
-  ExecutionContext,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
-  constructor(private reflector: Reflector) {
-    super();
-  }
-
-  canActivate(context: ExecutionContext) {
-    // Add custom authentication logic here
-    return super.canActivate(context);
-  }
-
-  handleRequest(err, user) {
-    // Custom error handling
+  handleRequest(err, user, info) {
+    console.log('Auth Error:', err);
+    console.log('User:', user);
+    console.log('Info:', info);
     if (err || !user) {
-      throw err || new UnauthorizedException('Invalid or expired token');
+      throw err || new UnauthorizedException();
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return user;

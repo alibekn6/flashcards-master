@@ -1,4 +1,18 @@
-import { PartialType } from '@nestjs/mapped-types';
-import { CreateFlashcardDto } from './create-flashcard.dto';
+import { IsString, IsOptional } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class UpdateFlashcardDto extends PartialType(CreateFlashcardDto) {}
+export class UpdateFlashcardDto {
+  @ApiProperty({ required: false })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  @IsString()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  @IsOptional()
+  question?: string;
+
+  @ApiProperty({ required: false })
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  @IsString()
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+  @IsOptional()
+  answer?: string;
+}

@@ -5,15 +5,16 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
-  Req,
   Get,
 } from '@nestjs/common';
-import { Request } from 'express';
+
 import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthPayloadDto } from './dto/auth.dto';
 import { LoginResponseDto } from './dto/login-response.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { AuthenticatedUser } from 'src/common/decorators/authenticated-user.decorator';
+import { User } from './entities/user.entity';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -48,7 +49,8 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
-  getMe(@Req() req: Request) {
-    console.log(req.user);
+  getMe(@AuthenticatedUser() user: User) {
+    console.log(user);
+    return user;
   }
 }
