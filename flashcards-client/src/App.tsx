@@ -3,6 +3,7 @@ import { LoginPage } from './pages/LoginPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { FoldersPage } from './pages/FoldersPage';
 import { FlashcardsPage } from './pages/FlashcardsPage';
+import { FlashcardsTestPage } from './pages/FlashcardsTestPage';
 import { AuthProvider } from './hooks/useAuth';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/folders" element={<FoldersPage />} />
           <Route path="/folders/:folderId/flashcards" element={<FlashcardsPage />} />
+          <Route path="/folders/:folderId/flashcards/test" element={<FlashcardsTestPage />} />
           <Route path="/" element={<Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>

@@ -62,32 +62,49 @@ export const FlashcardsPage = () => {
         <div>
           <button
             onClick={() => navigate('/folders')}
-            className="buttonPrimary"
+            className="buttonPrimary px-4 py-2 rounded mr-2"
           >
             Back to Folders
           </button>
+          {flashcards.length > 0 && (
+            <button
+              onClick={() => navigate(`/folders/${folderId}/flashcards/test`)}
+              className="buttonPrimary px-4 py-2 rounded"
+            >
+              Start Test
+            </button>
+          )}
         </div>
         <button
           onClick={() => {
             logout();
             navigate('/login');
           }}
-          className="buttonPrimary"
+          className="delete-button px-4 py-2 rounded"
         >
           Logout
         </button>
       </div>
-      <h1 className='title-flashcard'>Flashcards</h1>
+      <h1 className="title-flashcard">Flashcards</h1>
       {error && <div className="error">{error}</div>}
       <FlashcardForm onSubmit={handleCreateFlashcard} />
-      <div className="flashcard-list">
-        {flashcards.map((flashcard) => (
-          <div key={flashcard.id} className="flashcard-card">
-            <div className="question">{flashcard.question}</div>
-            <div className="answer">{flashcard.answer}</div>
-            <button className='delete-button' onClick={() => handleDeleteFlashcard(flashcard.id)}>Delete</button>
-          </div>
-        ))}
+      <div className="flashcard-list mt-4">
+        {flashcards.length > 0 ? (
+          flashcards.map((flashcard) => (
+            <div key={flashcard.id} className="flashcard-card">
+              <div className="question">{flashcard.question}</div>
+              <div className="answer">{flashcard.answer}</div>
+              <button
+                onClick={() => handleDeleteFlashcard(flashcard.id)}
+                className="delete-button px-2 py-1 rounded"
+              >
+                Delete
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No flashcards available. Add some above!</p>
+        )}
       </div>
     </div>
   );

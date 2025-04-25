@@ -1,0 +1,127 @@
+.testFlashcardContainer {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fcf7f8;
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.testFlashcardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.testFlashcardTitle {
+  font-weight: 700;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.testFlashcardError {
+  color: red;
+  margin-bottom: 15px;
+}
+
+.testFlashcardSection {
+  margin-bottom: 2rem;
+}
+
+.testFlashcardWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center vertically */
+}
+
+.testFlashcardCard {
+  width: 300px;
+  height: 200px;
+  perspective: 1000px;
+  cursor: pointer;
+  position: relative; /* Ensure card stays in place */
+}
+
+.testFlashcardCard.flipped .testFlashcardInner {
+  transform: rotateY(180deg);
+}
+
+.testFlashcardInner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  transform-origin: center center; /* Explicitly set rotation center */
+}
+
+.testFlashcardFront,
+.testFlashcardBack {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px; /* Reduced padding to minimize shift */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+  overflow: hidden;
+  box-sizing: border-box; /* Ensure padding doesn't affect dimensions */
+}
+
+.testFlashcardBack {
+  transform: rotateY(180deg);
+}
+
+.testFlashcardFront h3,
+.testFlashcardBack h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #333;
+  font-weight: 700;
+}
+
+.testFlashcardFront p,
+.testFlashcardBack p {
+  text-align: center;
+  font-size: 1rem;
+  color: #555;
+  max-width: 100%;
+  max-height: 100px;
+  overflow-y: auto;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  margin: 0;
+  padding: 0 5px;
+}
+
+.testFlashcardButton {
+  padding: 8px 15px;
+  background-color: #4e8098;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.testFlashcardButton:hover {
+  background-color: #3c6477;
+}
+
+.testFlashcardButton.next {
+  margin-top: 1rem;
+}
