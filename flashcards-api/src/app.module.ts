@@ -26,6 +26,14 @@ import { User } from './modules/auth/entities/user.entity';
         database: config.get('DB_NAME'),
         entities: [User, Folder, Flashcard],
         synchronize: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
       }),
     }),
 

@@ -24,7 +24,6 @@ export const RegisterPage = () => {
 
   return (
     <div className="auth-container">
-      <h2>Register</h2>
       {error && <div className="error">{error}</div>}
       <AuthForm type="register" onSubmit={handleRegister} />
       <p>

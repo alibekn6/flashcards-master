@@ -21,6 +21,8 @@ client
 ## 🛠 Установка и запуск сервера
 
 ```bash
+
+**server side**
 # 1. Клонировать репозиторий
 git clone https://github.com/alibekn6/flashcards-master
 cd flashcards-api
@@ -44,8 +46,8 @@ npm run start:dev
 
 
 
-```bash
-# 1. Клонировать репозиторий
+**client side**
+# 1. перейти в 
 cd flashcards-client
 
 # 2. Установить зависимости
