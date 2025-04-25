@@ -20,7 +20,11 @@ async function bootstrap() {
   };
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document, options);
-
+  app.enableCors({
+    origin: 'http://localhost:5173',
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  });
   await app.listen(3000);
 }
 bootstrap();
