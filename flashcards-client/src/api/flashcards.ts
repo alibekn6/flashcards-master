@@ -14,6 +14,8 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+
+
 export const flashcardsApi = {
   getFlashcards(folderId: number) {
     return api.get(`/folders/${folderId}/flashcards`);
@@ -30,4 +32,13 @@ export const flashcardsApi = {
   deleteFlashcard(folderId: number, flashcardId: number) {
     return api.delete(`/folders/${folderId}/flashcards/${flashcardId}`);
   },
+  
+  generateFlashcards: async (folderId: number, data: { topic: string; count: number; }) => {
+    const response = await api.post(`/llm/generate-flashcards`, {
+      ...data,
+      folderId
+    });
+    return response.data;
+  }
+
 };

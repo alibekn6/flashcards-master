@@ -10,5 +10,6 @@ import { User } from '../auth/entities/user.entity';
   imports: [TypeOrmModule.forFeature([Flashcard, Folder, User])],
   controllers: [FlashcardController],
   providers: [FlashcardService],
+  exports: [FlashcardService],
 })
 export class FlashcardModule {}

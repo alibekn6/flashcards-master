@@ -1,127 +1,142 @@
-.testFlashcardContainer {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-  background-color: #fcf7f8;
-  font-family: "Space Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
-}
-
-.testFlashcardHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-
-.testFlashcardTitle {
-  font-weight: 700;
-  font-size: 1.5rem;
-  color: #333;
-}
-
-.testFlashcardError {
-  color: red;
-  margin-bottom: 15px;
-}
-
-.testFlashcardSection {
-  margin-bottom: 2rem;
-}
-
-.testFlashcardWrapper {
+.container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center vertically */
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #fcf7f8;
+  font-family: 'Space Mono', monospace;
+  padding: 20px;
 }
 
-.testFlashcardCard {
-  width: 300px;
-  height: 200px;
+.progress {
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+  color: #4e8098;
+}
+
+.card {
+  width: 400px;
+  height: 300px;
   perspective: 1000px;
   cursor: pointer;
-  position: relative; /* Ensure card stays in place */
 }
 
-.testFlashcardCard.flipped .testFlashcardInner {
-  transform: rotateY(180deg);
-}
-
-.testFlashcardInner {
+.cardInner {
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.6s;
   transform-style: preserve-3d;
-  transform-origin: center center; /* Explicitly set rotation center */
+  transition: transform 0.6s ease;
+  transform-origin: center center;
 }
 
-.testFlashcardFront,
-.testFlashcardBack {
+.card.flipped .cardInner {
+  transform: rotateY(180deg);
+}
+
+.cardFront,
+.cardBack {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  background-color: white;
+  border: 2px solid #4e8098;
+  border-radius: 10px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 10px; /* Reduced padding to minimize shift */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  font-family: "Space Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
-  overflow: hidden;
-  box-sizing: border-box; /* Ensure padding doesn't affect dimensions */
+  box-sizing: border-box;
 }
 
-.testFlashcardBack {
+.cardBack {
   transform: rotateY(180deg);
 }
 
-.testFlashcardFront h3,
-.testFlashcardBack h3 {
+.cardFront h2,
+.cardBack h2 {
+  color: #4e8098;
   margin-bottom: 10px;
-  font-size: 1.2rem;
-  color: #333;
-  font-weight: 700;
 }
 
-.testFlashcardFront p,
-.testFlashcardBack p {
+.cardFront p,
+.cardBack p {
   text-align: center;
-  font-size: 1rem;
-  color: #555;
-  max-width: 100%;
-  max-height: 100px;
+  font-size: 1.1rem;
   overflow-y: auto;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  margin: 0;
-  padding: 0 5px;
+  max-height: 200px;
 }
 
-.testFlashcardButton {
-  padding: 8px 15px;
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.button {
+  padding: 10px 20px;
   background-color: #4e8098;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 5px;
   cursor: pointer;
-  font-family: "Space Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
 }
 
-.testFlashcardButton:hover {
-  background-color: #3c6477;
+.button:hover {
+  background-color: #3a6275;
 }
 
-.testFlashcardButton.next {
-  margin-top: 1rem;
+.knowButton {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+}
+
+.knowButton:hover {
+  background-color: #388e3c;
+}
+
+.dontKnowButton {
+  padding: 10px 20px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-family: 'Space Mono', monospace;
+  font-size: 1rem;
+}
+
+.dontKnowButton:hover {
+  background-color: #d32f2f;
+}
+
+.results {
+  text-align: center;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px solid #4e8098;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.results h2 {
+  color: #4e8098;
+  margin-bottom: 15px;
+}
+
+.results p {
+  font-size: 1.1rem;
+  margin: 5px 0;
 }
