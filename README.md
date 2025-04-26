@@ -5,7 +5,7 @@
 - **⚠️WARNING⚠️** – сервер отключатеся через 50 минут неактивности, если у вас что то не работает это возможно сервер уснул
 text me : [t.me/internalpointer](https://t.me/internalpointer)
 
-- **⚠️WARNING⚠️** – ! я использовал беплатные возможности render и gemini, возможно скорость приложение будет чуть низким (be patient or text me)
+- **⚠️WARNING⚠️** – ! я использовал бесплатные возможности render и gemini, возможно скорость приложение будет чуть низким (be patient or text me)
 [t.me/internalpointer](https://t.me/internalpointer)
 
 
@@ -24,6 +24,8 @@ core-api
 
 client
 - **React** – фреймворк клиентской части
+- **React router dom** – для удобной навигаций
+- **tailwindcss** - для стилей
 
 ---
 
