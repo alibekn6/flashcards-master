@@ -66,25 +66,30 @@ export const FlashcardsPage = () => {
       setError("Question count must be between 1 and 20");
       return;
     }
-  
+
     setAiLoading(true);
     setError("");
     try {
-      const response = await flashcardsApi.generateFlashcards(Number(folderId), {
-        topic,
-        count: questionCount,
-      });
-      
+      const response = await flashcardsApi.generateFlashcards(
+        Number(folderId),
+        {
+          topic,
+          count: questionCount,
+        }
+      );
+
       // Access the data property from the response
       const newFlashcards = response.data || [];
-      
+
       // Update state with new flashcards
-      setFlashcards(prev => [...prev, ...newFlashcards]);
+      setFlashcards((prev) => [...prev, ...newFlashcards]);
       setTopic("");
       setQuestionCount(5);
     } catch (err: any) {
       console.error(err);
-      setError("Failed to generate flashcards: " + (err.message || "Unknown error"));
+      setError(
+        "Failed to generate flashcards: " + (err.message || "Unknown error")
+      );
     } finally {
       setAiLoading(false);
     }
@@ -162,17 +167,20 @@ export const FlashcardsPage = () => {
               htmlFor="count"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
-              Questions (1-20)
+              Questions
             </label>
-            <input
-              type="number"
+            <select
               id="count"
-              min="1"
-              max="20"
               value={questionCount}
               onChange={(e) => setQuestionCount(Number(e.target.value))}
-              className="w-full p-2 border rounded"
-            />
+              className="w-full p-2 border rounded bg-white appearance-none"
+            >
+              {[...Array(20)].map((_, i) => (
+                <option key={i + 1} value={i + 1}>
+                  {i + 1}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         <button

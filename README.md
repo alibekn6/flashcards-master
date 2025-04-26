@@ -2,6 +2,9 @@
 
 Это серверная и клиентская часть проекта **Flashcards Master** – приложения для интерактивного обучения с использованием карточек. Сервис позволяет пользователям регистрироваться, входить в систему, создавать карточки, отслеживать прогресс и использовать внешние источники, для автоматической генерации карточек.
 
+- **WARNING** – сервер отключатеся через 50 минут неактивности, если у вас что то не работает это возможно сервер уснул
+text me : t.me/internalpointer
+
 ## Стек
 
 core-api
@@ -10,8 +13,10 @@ core-api
 - **PostgreSQL** – основная база данных
 - **JWT (JSON Web Token)** – авторизация и аутентификация
 - **Swagger (OpenAPI)** – документация API
+- **Gemini** – Google Gemini для генерации карточек
 - **Jest** – модульное тестирование
 - **ESLint + Prettier + Husky + lint-staged** – обеспечение качества кода
+
 
 client
 - **React** – фреймворк клиентской части
@@ -32,7 +37,7 @@ npm install
 
 # 3. Создать .env файл
 .env
-# отредактируйте .env и укажите свои значения (DB_USER, DB_PASSWORD, JWT_SECRET and so on)
+# отредактируйте .env и укажите свои значения (DB_USER, DB_PASSWORD, JWT_SECRET, GEMINI_API_KEY and so on)
 
 # 4. Запустить PostgreSQL
 pgadmin / psql на юникс системах через терминал
@@ -64,3 +69,8 @@ VITE_API_URL=http://localhost:3000/api
 npm run dev
 
 вуаля у вас есть локоальная версия моего проекта, enjoy
+
+# auth login (if you dont want to create account and want to see already created fodlers and flashcards)
+email: alibek@kbtu.kz
+password: pass
+
