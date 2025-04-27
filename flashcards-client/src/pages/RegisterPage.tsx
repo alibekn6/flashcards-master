@@ -11,7 +11,7 @@ export const RegisterPage = () => {
 
   const handleRegister = async (email: string, password: string) => {
     try {
-      console.log('Register attempt:', { email }); // Debug
+      // console.log('Register attempt:', { email }); // Debug
       await authApi.register(email, password);
       const user = await authApi.getCurrentUser();
       setUser(user);

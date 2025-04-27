@@ -21,7 +21,7 @@ export class FlashcardService {
   ) {}
 
   async findByFolder(userId: number, folderId: number) {
-    console.log(`Checking access for user ${userId} to folder ${folderId}`);
+    // console.log(`Checking access for user ${userId} to folder ${folderId}`);
     const folder = await this.folderRepo.findOne({
       where: { id: folderId },
       relations: ['user'],

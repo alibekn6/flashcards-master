@@ -50,7 +50,7 @@ export class AuthController {
   @Get('me')
   @UseGuards(AuthGuard('jwt'))
   getMe(@AuthenticatedUser() user: User) {
-    console.log(user);
+    // console.log(user);
     return user;
   }
 }

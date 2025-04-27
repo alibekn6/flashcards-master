@@ -9,7 +9,7 @@ export const authApi = {
         email,
         password,
       });
-      console.log('Register response:', response.data);
+      // console.log('Register response:', response.data);
       const token =
         response.data.token?.accessToken ||
         response.data.access_token ||
@@ -32,7 +32,7 @@ export const authApi = {
         email,
         password,
       });
-      console.log('Login response:', response.data);
+      // console.log('Login response:', response.data);
       const token =
         response.data.token?.accessToken ||
         response.data.access_token ||
@@ -55,7 +55,7 @@ export const authApi = {
     const response = await axios.get(`${API_URL}/auth/me`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-    console.log('User response:', response.data);
+    // console.log('User response:', response.data);
     return response.data;
   },
 };

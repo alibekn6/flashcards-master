@@ -11,7 +11,7 @@ export const LoginPage = () => {
 
   const handleLogin = async (email: string, password: string) => {
     try {
-      console.log('Login attempt:', { email });
+      // console.log('Login attempt:', { email });
       await authApi.login(email, password);
       const user = await authApi.getCurrentUser();
       setUser(user);

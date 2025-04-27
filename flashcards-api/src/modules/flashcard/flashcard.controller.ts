@@ -35,7 +35,7 @@ export class FlashcardController {
     @AuthenticatedUser() user: User,
     @Param('folderId', ParseIntPipe) folderId: number,
   ) {
-    console.log('User ID in controller:', user.id);
+    // console.log('User ID in controller:', user.id);
     return this.flashcardService.findByFolder(user.id, folderId);
   }
 

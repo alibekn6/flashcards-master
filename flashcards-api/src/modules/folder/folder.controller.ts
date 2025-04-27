@@ -29,7 +29,7 @@ export class FolderController {
 
   @Get()
   getFolders(@AuthenticatedUser() user: User) {
-    console.log('User ID in controller!!!:', user.id);
+    // console.log('User ID in controller!!!:', user.id);
     return this.folderService.findByUser(user.id);
   }
 

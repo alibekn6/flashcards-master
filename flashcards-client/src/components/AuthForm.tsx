@@ -9,7 +9,7 @@ export const AuthForm = ({ type, onSubmit }: {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault(); // Prevent default form submission
-    console.log('Form submitted:', { email, password }); // Debug
+    // console.log('Form submitted:', { email, password }); // Debug
     onSubmit(email, password);
   };
 
@@ -22,7 +22,7 @@ export const AuthForm = ({ type, onSubmit }: {
           placeholder="Email"
           value={email}
           onChange={(e) => {
-            console.log('Email input changed:', e.target.value); // Debug
+            // console.log('Email input changed:', e.target.value); // Debug
             setEmail(e.target.value);
           }}
         />
@@ -33,7 +33,7 @@ export const AuthForm = ({ type, onSubmit }: {
           placeholder="Password"
           value={password}
           onChange={(e) => {
-            console.log('Password input changed:', e.target.value); // Debug
+            // console.log('Password input changed:', e.target.value); // Debug
             setPassword(e.target.value);
           }}
         />
