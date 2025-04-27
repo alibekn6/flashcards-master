@@ -8,12 +8,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Folder } from '../folder/entities/folder.entity';
 import { User } from '../auth/entities/user.entity';
+import { Flashcard } from '../flashcard/entities/flashcard.entity';
+import { FlashcardService } from '../flashcard/flashcard.service';
 
 @Injectable()
 export class FolderService {
   constructor(
     @InjectRepository(Folder) private folderRepo: Repository<Folder>,
     @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Flashcard) private flashcardRepo: Repository<Flashcard>,
+    private readonly flashcardService: FlashcardService,
   ) {}
 
   async findByUser(userId: number): Promise<Folder[]> {
@@ -43,7 +47,7 @@ export class FolderService {
   async delete(userId: number, folderId: number) {
     const folder = await this.folderRepo.findOne({
       where: { id: folderId },
-      relations: ['user'],
+      relations: ['user', 'flashcards'],
     });
 
     if (!folder) {
@@ -54,6 +58,13 @@ export class FolderService {
       throw new ForbiddenException('You do not own this folder');
     }
 
-    await this.folderRepo.remove(folder);
+    if (folder.flashcards && folder.flashcards.length > 0) {
+      for (const flashcard of folder.flashcards) {
+        await this.flashcardService.delete(userId, folderId, flashcard.id);
+      }
+    }
+
+    await this.folderRepo.delete(folderId);
+    return { success: true };
   }
 }
