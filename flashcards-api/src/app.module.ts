@@ -27,14 +27,14 @@ import { LlmModule } from './modules/llm/llm.module';
         database: config.get('DB_NAME'),
         entities: [User, Folder, Flashcard],
         synchronize: true,
-        // ssl: {
-        //   rejectUnauthorized: false,
-        // },
-        // extra: {
-        //   ssl: {
-        //     rejectUnauthorized: false,
-        //   },
-        // },
+        ssl: {
+          rejectUnauthorized: false,
+        },
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
       }),
     }),
 
