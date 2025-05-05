@@ -65,7 +65,7 @@ export const FlashcardsTestPage: React.FC = () => {
   const handleRestart = () => {
     setCurrentCardIndex(0);
     setIsFlipped(false);
-    setProgress({ know: 0, dontKnow: 0 });
+    setProgress({ know: 0, dontKnow: 0, skipped: 0 });
     setShowResults(false);
   };
 
