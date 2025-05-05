@@ -8,6 +8,7 @@ import {
   Body,
   UseGuards,
   ParseIntPipe,
+  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard';
 import { FlashcardService } from './flashcard.service';
@@ -87,5 +88,25 @@ export class FlashcardController {
     @Param('flashcardId', ParseIntPipe) flashcardId: number,
   ) {
     return this.flashcardService.delete(user.id, folderId, flashcardId);
+  }
+
+  @Patch(':flashcardId/status')
+  async updateStatus(
+    @AuthenticatedUser() user: User,
+    @Param('folderId', ParseIntPipe) folderId: number,
+    @Param('flashcardId', ParseIntPipe) flashcardId: number,
+    @Body() body: { status: boolean },
+  ) {
+    return this.flashcardService.updateStatus(
+      user.id,
+      folderId,
+      flashcardId,
+      body.status,
+    );
+  }
+
+  @Get('progress')
+  async getProgress(@Param('folderId', ParseIntPipe) folderId: number) {
+    return this.flashcardService.getProgress(folderId);
   }
 }

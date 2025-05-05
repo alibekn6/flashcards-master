@@ -17,9 +17,14 @@ export const FlashcardsTestPage: React.FC = () => {
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const navigate = useNavigate();
-  const [progress, setProgress] = useState<{ know: number; dontKnow: number }>({
+  const [progress, setProgress] = useState<{
+    know: number;
+    dontKnow: number;
+    skipped: number;
+  }>({
     know: 0,
     dontKnow: 0,
+    skipped: 0,
   });
   const [showResults, setShowResults] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -53,21 +58,45 @@ export const FlashcardsTestPage: React.FC = () => {
     }
   };
 
-  const handleKnow = () => {
-    setProgress((prev) => ({ ...prev, know: prev.know + 1 }));
-    handleNextCard();
-  };
+  const handleKnow = () => handleAnswer(true);
 
-  const handleDontKnow = () => {
-    setProgress((prev) => ({ ...prev, dontKnow: prev.dontKnow + 1 }));
-    handleNextCard();
-  };
+  const handleDontKnow = () => handleAnswer(false);
 
   const handleRestart = () => {
     setCurrentCardIndex(0);
     setIsFlipped(false);
     setProgress({ know: 0, dontKnow: 0 });
     setShowResults(false);
+  };
+
+  const handleAnswer = async (status: boolean) => {
+    const currentCard = flashcards[currentCardIndex];
+
+    try {
+      await flashcardsApi.updateFlashcardStatus(
+        Number(folderId),
+        currentCard.id,
+        status
+      );
+    } catch (error) {
+      console.error("Failed to update status", error);
+    }
+
+    setProgress((prev) => ({
+      ...prev,
+      know: status ? prev.know + 1 : prev.know,
+      dontKnow: !status ? prev.dontKnow + 1 : prev.dontKnow,
+    }));
+
+    handleNextCard();
+  };
+
+  const handleSkip = () => {
+    setProgress((prev) => ({
+      ...prev,
+      skipped: prev.skipped + 1,
+    }));
+    handleNextCard();
   };
 
   if (loading) return <div>Loading...</div>;
@@ -80,12 +109,12 @@ export const FlashcardsTestPage: React.FC = () => {
     <div className={styles.container}>
       {showResults ? (
         <div className={styles.results}>
-        <button
-          onClick={() => navigate(`/folders/${folderId}/flashcards`)}
-          className={styles.testFlashcardButton}
-        >
-          Back to Flashcards
-        </button>
+          <button
+            onClick={() => navigate(`/folders/${folderId}/flashcards`)}
+            className={styles.testFlashcardButton}
+          >
+            Back to Flashcards
+          </button>
           <h2>Test Results</h2>
           <p>Total Cards: {flashcards.length}</p>
           <p>You know: {progress.know}</p>
@@ -114,6 +143,20 @@ export const FlashcardsTestPage: React.FC = () => {
               </div>
             </div>
           </div>
+
+          <div className="mb-4 p-4 border rounded bg-white shadow-sm w-full max-w-md text-sm text-gray-800">
+            <p className="mb-1 font-semibold">Progress</p>
+            <div className="space-y-1">
+              <div>✅ Know: {progress.know}</div>
+              <div>❌ Don't Know: {progress.dontKnow}</div>
+              <div>➖ Skipped: {progress.skipped}</div>
+            </div>
+            <div className="mt-2 text-right text-xs text-gray-500">
+              Answered: {progress.know + progress.dontKnow + progress.skipped} /{" "}
+              {flashcards.length}
+            </div>
+          </div>
+
           <div className={styles.actions}>
             <button className={styles.knowButton} onClick={handleKnow}>
               Know
@@ -121,7 +164,7 @@ export const FlashcardsTestPage: React.FC = () => {
             <button className={styles.dontKnowButton} onClick={handleDontKnow}>
               Don't Know
             </button>
-            <button className={styles.button} onClick={handleNextCard}>
+            <button className={styles.button} onClick={handleSkip}>
               Skip
             </button>
           </div>

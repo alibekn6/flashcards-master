@@ -39,6 +39,16 @@ export const flashcardsApi = {
       folderId
     });
     return response.data;
+  },
+
+  updateFlashcardStatus(folderId: number, flashcardId: number, status: boolean) {
+    return api.patch(`/folders/${folderId}/flashcards/${flashcardId}/status`, {
+      status,
+    })
+  },
+
+  getProgress(folderId: number) {
+    return api.get(`/folders/${folderId}/flashcards/progress`);
   }
 
 };

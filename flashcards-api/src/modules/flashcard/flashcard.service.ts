@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { IsNull, Not, Repository } from 'typeorm';
 import { Flashcard } from '../flashcard/entities/flashcard.entity';
 import { Folder } from '../folder/entities/folder.entity';
 import { UpdateFlashcardDto } from './dto/update-flashcard.dto';
@@ -83,5 +83,54 @@ export class FlashcardService {
     }
 
     return this.flashcardRepo.delete(flashcard);
+  }
+
+  async updateStatus(
+    userId: number,
+    folderId: number,
+    flashcardId: number,
+    status: boolean,
+  ) {
+    const flashcard = await this.flashcardRepo.findOne({
+      where: {
+        id: flashcardId,
+        folder: { id: folderId, user: { id: userId } },
+      },
+    });
+
+    if (!flashcard) {
+      throw new NotFoundException(
+        'Flashcard not found or you dont have permission',
+      );
+    }
+    flashcard.status = status;
+    return this.flashcardRepo.save(flashcard);
+  }
+
+  async getProgress(folderId: number) {
+    const totalCount = await this.flashcardRepo.count({
+      where: { folder: { id: folderId } },
+    });
+
+    const answeredCount = await this.flashcardRepo.count({
+      where: { folder: { id: folderId }, status: Not(IsNull()) },
+    });
+
+    const knownCount = await this.flashcardRepo.count({
+      where: { folder: { id: folderId }, status: true },
+    });
+
+    const unknownCount = await this.flashcardRepo.count({
+      where: { folder: { id: folderId }, status: false },
+    });
+
+    return {
+      answeredCount,
+      totalCount,
+      knownCount,
+      unknownCount,
+      progressPercentage:
+        totalCount > 0 ? (answeredCount / totalCount) * 100 : 0,
+    };
   }
 }
